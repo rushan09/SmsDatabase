@@ -5,14 +5,15 @@ package com.bustime.model;
  */
 public class SmsDetailsModel {
 
-    private int Latitude;
-    private int Longitude;
-    private int Speed;      //(Km/h)
+    private String MobileNumber;
+    private float Latitude;
+    private float Longitude;
+    private float Speed;      //(Km/h)
     private String Date;
     private String Time;        // 08 34.0 413 02 4EDF 6155
     private String Battery;
     private int Charging;
-    private char GPS_Signal;
+    private String GPS_Signal;
     private String Imei;
     private int GPS_Satellites;
     private int Altitude;
@@ -21,27 +22,35 @@ public class SmsDetailsModel {
     private int LAC;        //Location Area Code
     private int Cell_Id;
 
-    public int getLatitude() {
+    public String getMobileNumber() {
+        return MobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        MobileNumber = mobileNumber;
+    }
+
+    public float getLatitude() {
         return Latitude;
     }
 
-    public void setLatitude(int latitude) {
+    public void setLatitude(float latitude) {
         Latitude = latitude;
     }
 
-    public int getLongitude() {
+    public float getLongitude() {
         return Longitude;
     }
 
-    public void setLongitude(int longitude) {
+    public void setLongitude(float longitude) {
         Longitude = longitude;
     }
 
-    public int getSpeed() {
+    public float getSpeed() {
         return Speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(float speed) {
         Speed = speed;
     }
 
@@ -77,11 +86,11 @@ public class SmsDetailsModel {
         Charging = charging;
     }
 
-    public char getGPS_Signal() {
+    public String getGPS_Signal() {
         return GPS_Signal;
     }
 
-    public void setGPS_Signal(char GPS_Signal) {
+    public void setGPS_Signal(String GPS_Signal) {
         this.GPS_Signal = GPS_Signal;
     }
 

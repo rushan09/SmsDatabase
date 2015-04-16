@@ -1,7 +1,6 @@
 package com.bustime.main;
 
 import com.bustime.logic.GsmModem;
-import com.bustime.model.SmsDetailsModel;
 
 /**
  * Created by Rushan on 4/7/2015.
@@ -13,31 +12,19 @@ public class ReadSms {
     private static String modemName = "HUAWEI";
     private static String modemPin = "0000";
     private static String SMSC = "+9477000003"; //Message Center Number ex. Mobitel
-    public static String Sms = "";
+
 
     public static void main(String[] args) throws Exception {
         GsmModem gsmModem = new GsmModem();
         GsmModem.configModem(port, bitRate, modemName, modemPin, SMSC);
-//        gsmModem.Sender("+94717527175", "Test Message"); // (tp, msg)
+
+//        gsmModem.Sender("+94768073557", "begin123456"); // (tp, msg)
+        gsmModem.Sender("+94768073557", "t030s002n123456"); // (tp, msg)
+
         //get the new incoming sms
-        Sms = gsmModem.Reader();
-
-        SmsDetailsModel smsDetails;
-        smsDetails = filterSms(Sms);
-//        thre//
-        saveToDB(smsDetails);
+        gsmModem.Reader();
 
     }
 
-    private static void saveToDB(SmsDetailsModel smsDetails) {
-        //To Do
-    }
-
-    public static SmsDetailsModel filterSms(String massage){
-        //To Do
-        //This function returns a model
-        SmsDetailsModel smsDetails = new SmsDetailsModel();
-        return smsDetails;
-    }
 }
 
