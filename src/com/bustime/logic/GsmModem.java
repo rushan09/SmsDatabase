@@ -11,7 +11,6 @@ import static com.bustime.logic.FilterSms.filterSmsDetails;
 /**
  * Created by Rushan on 3/27/2015.
  */
-
 public class GsmModem {
     private static String port;
     private static int bitrate;

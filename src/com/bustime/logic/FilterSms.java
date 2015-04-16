@@ -71,4 +71,17 @@ public class FilterSms {
         System.out.println();
 
     }
+
+    private int getBusRouteNo(String MobileNo){
+        //To Do
+        return 0;
+    }
+    private String getDirection(String BusRoute,Float Longitude,Float Latitude){
+        //TO DO
+        return null;
+    }
+    private int getCurrentBusStopNo(String BusRoute,Float Longitude,Float Latitude){
+        //To Do
+        return 0;
+    }
 }

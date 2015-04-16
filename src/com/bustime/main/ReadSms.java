@@ -20,6 +20,7 @@ public class ReadSms {
 
 //        gsmModem.Sender("+94768073557", "begin123456"); // (tp, msg)
         gsmModem.Sender("+94768073557", "t030s002n123456"); // (tp, msg)
+//        gsmModem.Sender("+94717527175", "t030s002n123456"); // (tp, msg)
 
         //get the new incoming sms
         gsmModem.Reader();
