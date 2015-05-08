@@ -71,6 +71,8 @@ public class GsmModem {
             System.out.println(msg);
         }
     }
+
+
     public class InboundNotification implements IInboundMessageNotification{
         @Override
         public void process(AGateway aGateway, Message.MessageTypes messageTypes, InboundMessage msg) {
@@ -90,6 +92,7 @@ public class GsmModem {
                         e.printStackTrace();
                     }
 
+//                    System.out.println("Incoming SMS is: "+rcvdSms);
                     filterSmsDetails(rcvdSms);
                     break;
 
