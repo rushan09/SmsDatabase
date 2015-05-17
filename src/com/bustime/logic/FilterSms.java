@@ -1,6 +1,11 @@
 package com.bustime.logic;
 
+import com.bustime.model.BusStopDetailsModel;
 import com.bustime.model.SmsDetailsModel;
+import com.bustime.util.Dbmethods;
+
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by Rushan on 4/16/2015.
@@ -11,6 +16,7 @@ public class FilterSms {
     private static SmsDetailsModel smsDetails;
     private static float longitude=0;
     private static float latitude=0;
+    private static Dbmethods db = new Dbmethods();
 
     public static void filterSmsDetails(String sms){
 
@@ -44,7 +50,7 @@ public class FilterSms {
         if((latitude==smsDetails.getLatitude())&&(longitude==smsDetails.getLongitude())){
 //        if(((longitude!=0)&&(latitude!=0))||((latitude==smsDetails.getLatitude())&&(longitude==smsDetails.getLongitude()))){
 
-            System.out.println("Saved once! ");
+//            System.out.println("msg received! ");
             System.out.println();
         }
         else {
@@ -69,19 +75,90 @@ public class FilterSms {
         System.out.println("GPS_Signal: "+ smsDetails.getGPS_Signal());
         System.out.println("Imei: "+ smsDetails.getImei());
         System.out.println();
+        int currentBusStop = getCurrentBusStopNo(String.valueOf((getBusRouteNo(smsDetails.getMobileNumber()))),smsDetails.getLongitude(),smsDetails.getLatitude());
+        try {
+            db.saveSmsDetailsToDB(smsDetails,currentBusStop,"Pettah","AT-4245");
+//            db.saveSmsDetailsToDB(smsDetails,currentBusStop,"Pettah",getBusRegNo(smsDetails.getMobileNumber()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
-    private int getBusRouteNo(String MobileNo){
-        //To Do
-        return 0;
+    private static int getBusRouteNo(String MobileNo){
+        int BusRouteNo=-1;
+        try {
+            BusRouteNo = db.GetBusRouteNo(MobileNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return BusRouteNo;
     }
-    private String getDirection(String BusRoute,Float Longitude,Float Latitude){
-        //TO DO
-        return null;
+
+    private static String getBusRegNo(String MobileNo){
+        String BusRegNo = null;
+        try {
+            BusRegNo = db.getBusRegNo(MobileNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return BusRegNo;
     }
-    private int getCurrentBusStopNo(String BusRoute,Float Longitude,Float Latitude){
-        //To Do
-        return 0;
+
+    private static String getDirection(String BusRegNo,int BusRouteNo,float Longitude,float Latitude){
+        List<BusStopDetailsModel> directions = null;
+        try {
+            directions = db.getBusRouteDirectionsDetails(BusRouteNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        BusStopDetailsModel oldDetails = null;
+        try {
+            oldDetails = db.getOldDetails(BusRegNo);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if(directions.get(0).getHoltName()==oldDetails.getHoltName()){
+            double nowLength = Math.sqrt(Math.pow((directions.get(0).getLongitude() - Longitude), 2) + Math.pow((directions.get(0).getLatitude() - Latitude), 2));
+            double oldLength= Math.sqrt(Math.pow((directions.get(0).getLongitude() - oldDetails.getLongitude()), 2) + Math.pow((directions.get(0).getLatitude() - oldDetails.getLatitude()), 2));
+
+            if(nowLength>oldLength){
+                oldDetails.setHoltName(directions.get(1).getHoltName());
+            }
+        }else {
+            double nowLength = Math.sqrt(Math.pow((directions.get(1).getLongitude() - Longitude), 2) + Math.pow((directions.get(1).getLatitude() - Latitude), 2));
+            double oldLength= Math.sqrt(Math.pow((directions.get(1).getLongitude() - oldDetails.getLongitude()), 2) + Math.pow((directions.get(1).getLatitude() - oldDetails.getLatitude()), 2));
+
+            if(nowLength>oldLength){
+                oldDetails.setHoltName(directions.get(0).getHoltName());
+            }
+        }
+        return oldDetails.getHoltName();
+    }
+
+    private static int getCurrentBusStopNo(String BusRoute, float Longitude, float Latitude){
+        int a = 0;
+        List<BusStopDetailsModel> BusStopDetailsList = null;
+        try {
+            BusStopDetailsList = db.getBusStopDetailsList("route138");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        double length;
+        double shortestLength = Math.sqrt(Math.pow((BusStopDetailsList.get(0).getLongitude() - Longitude), 2) + Math.pow((BusStopDetailsList.get(0).getLatitude() - Latitude), 2));
+
+        for(int i=1;i<BusStopDetailsList.size();i++){
+            length=Math.sqrt(Math.pow((BusStopDetailsList.get(i).getLongitude()-Longitude),2)+Math.pow((BusStopDetailsList.get(i).getLatitude()-Latitude),2));
+            if(shortestLength > length){
+                a=i;
+
+                shortestLength=length;
+            }
+        }
+
+        return BusStopDetailsList.get(a).getBusStopNo();
     }
 }

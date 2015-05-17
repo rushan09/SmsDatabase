@@ -7,7 +7,7 @@ import com.bustime.logic.GsmModem;
  */
 public class ReadSms {
 
-    private static String port = "COM13"; //Modem Port.
+    private static String port = "COM9"; //Modem Port.
     private static int bitRate = 115200;
     private static String modemName = "HUAWEI";
     private static String modemPin = "0000";
@@ -18,9 +18,9 @@ public class ReadSms {
         GsmModem gsmModem = new GsmModem();
         GsmModem.configModem(port, bitRate, modemName, modemPin, SMSC);
 
-//        gsmModem.Sender("+94768073557", "begin123456"); // (tp, msg)
-        gsmModem.Sender("+94768073557", "t030s002n123456"); // (tp, msg)
-//        gsmModem.Sender("+94717527175", "t030s002n123456"); // (tp, msg)
+        gsmModem.Sender("+94768073555", "begin123456"); // (tp, msg)
+//        gsmModem.Sender("+94768073557", "t010s003n123456"); // (tp, msg)
+//        gsmModem.Sender("+94717527175", "Test SMS"); // (tp, msg)
 
         //get the new incoming sms
         gsmModem.Reader();

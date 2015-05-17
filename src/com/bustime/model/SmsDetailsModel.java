@@ -22,6 +22,12 @@ public class SmsDetailsModel {
     private int LAC;        //Location Area Code
     private int Cell_Id;
 
+    //Direction of the bus
+    //Bus registration number
+    //the Current bus stop of the bus
+    //Distance between bus stops
+
+
     public String getMobileNumber() {
         return MobileNumber;
     }
